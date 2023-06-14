@@ -244,9 +244,34 @@ contrastar_hipotesis_permutaciones(muestraEdadCasaHombre,
 #     las personas que tienen techo de planchas metalicas, losa hormigon y tejas. 
 
 # H1: El tamaño promedio de las casas de la region de tarapaca es diferente para  
-#     las personas que tienen techo de planchas metalicas, losa hormigon y tejas.
+#     las personas que tienen techo de planchas metalicas, losa hormigon y planchas de fibrocemento.
 
+datos <- read.csv2(file.choose(), stringsAsFactors = FALSE)
 
+# Se obtienen las personas que viven en la Región de Tarapaca
+tarapaca <- datos %>% filter(region == "Region de Tarapaca")
+set.seed(625)
+
+# Se obtiene la muestra de tamaño 500
+tamano <- 500
+muestra <- tarapaca[sample(nrow(tarapaca), tamano),]
+
+tamanoCasas <- muestra[["v12"]] # tamaño de casas en promedio ejemplo de 61 a 100
+techos<- factor(muestra[["v6"]]) # nombre de las columnas?
+
+instancia <- factor(1:tamano)
+datos2 <- data.frame(instancia, tamanoCasas, techos)
+
+metalico <- datos2 %>% filter(techos == "Planchas metalicas (zinc, cobre, etc.)")
+n_metalica <- nrow(metalico)
+
+losa <- datos2 %>% filter(techos == "Losa hormigon")
+n_losa <- nrow(losa)
+
+fibrocemento <- datos2 %>% filter(techos == "Plancha de fibrocemento (pizarregno)")
+n_fibrocecmento <- nrow(fibrocemento)
+
+print(metalico)
 
 
 
