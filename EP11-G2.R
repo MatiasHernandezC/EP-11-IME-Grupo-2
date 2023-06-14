@@ -3,12 +3,30 @@
 # Integrante Matías Hernández
 # Integrante Ariel Núñez
 # Integrante Carla Polanco
+
+# Se importa la librería "ggpubr".
+if (!require(ggpubr)) {
+  install.packages("ggpubr", dependencies = TRUE)
+  require(ggpubr)
+}
+# Se importa la librería "tidyr".
+if (!require(tidyr)) {
+  install.packages("tidyr", dependencies = TRUE)
+  require(tidyr)
+}
+# Se importa la librería "dplyr".
+if (!require(dplyr)) {
+  install.packages("dplyr", dependencies = TRUE)
+  require(dplyr)
+}
 library(ggpubr)
 library(tidyr)
 library(dplyr)
+
+# Se leen los datos a trabajar
 datos <- read.csv2(file.choose(), stringsAsFactors = TRUE)
 
-# --------------Definicion de funciones importantes--------------
+# --------------Definición de funciones importantes--------------
 
 # Función para obtener una permutación.
 # Argumentos:
