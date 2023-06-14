@@ -4,7 +4,8 @@
 # Integrante Ariel Núñez
 # Integrante Carla Polanco
 library(ggpubr)
-
+library(tidyr)
+library(dplyr)
 datos <- read.csv2(file.choose(), stringsAsFactors = TRUE)
 
 # --------------Definicion de funciones importantes--------------
@@ -131,15 +132,31 @@ contrastar_hipotesis_permutaciones <- function(muestra_1, muestra_2,
 
 
 
-# PREGUNTAS (TODOS LOS GRUPOS) 
+# --------------PREGUNTAS (TODOS LOS GRUPOS) --------------
 # 1. Propongan una pregunta de investigación original, que involucre la comparación de las medias de dos 
 # grupos independientes (más abajo se dan unos ejemplos). Fijando una semilla propia, seleccionen una 
 # muestra aleatoria de hogares (250 < n < 500) y respondan la pregunta propuesta utilizando una simulación 
 # Monte Carlo. 
 
 # Pregunta de investigación original propuesta:
-# Un grupo de estudiantes de informatica de la universidad de Santiago de Chile quiere saber si 
-# 
+# Un grupo de estudiantes de informática de la universidad de Santiago de Chile quiere saber si 
+# la edad media en la que la gente logra pagar la totalidad de la casa propia es la misma para 
+# hombres y mujeres
+
+# Estadístico de interés: la media de la edad de las personas que logra pagar la totalidad de la 
+# casa propia
+
+# Hipótesis:
+# H0: La edad media de las personas que logra pagar la totalidad de la casa propia es igual 
+# para hombres y mujeres.
+
+# HA: La edad media de las personas que logra pagar la totalidad de la casa propia es distinta 
+# para hombres y mujeres.
+
+# Denotando como uA al promedio de las edades hombres, y uB al promedio de las edades de las 
+# mujeres, entonces matemáticamente las hipótesis quedan expresadas como:
+# H0: uA - uB = 0 
+# HA: uA - uB != 0 
 
 # Tamaño muestra = 400
 # Semilla = 1312
@@ -147,10 +164,42 @@ contrastar_hipotesis_permutaciones <- function(muestra_1, muestra_2,
 # Permutaciones = 1750
 R = 1750
 set.seed(1312)
-# media_valor_observado <- mean(datos)
+alfa <- 0.05
+
+# Se filtran datos de hombres y mujeres.
+hombre <- datos %>% filter(sexo == "Hombre")
+mujer <- datos %>% filter(sexo == "Mujer")
+
+casaHombre <- hombre %>% filter(v9 == "Propio pagado")
+
+casaMujer <- mujer %>% filter(v9 == "Propio pagado")
+
+# Se tabula que se vea la edad de las personas que se necesita.
+edadCasaHombre <- casaHombre[["edad"]]
+edadCasaMujer <- casaMujer[["edad"]]
+
+# Se crean las tablas de las muestras para trabajar.
+muestraEdadCasaHombre <- sample(edadCasaHombre, 400)
+muestraEdadCasaMujer <- sample(edadCasaMujer, 400)
 
 
+contrastar_hipotesis_permutaciones(muestraEdadCasaHombre, 
+                                   muestraEdadCasaMujer, 
+                                   repeticiones = R,
+                                   FUN = mean,
+                                   alternative = "two.sided",
+                                   plot = TRUE, 
+                                   color = "red",
+                                   fill = "red")
 
+#-------------- CONCLUSIONES PREGUNTA 1 --------------
+
+# Dado que se obtiene un valor p = 0.01142204 < alfa = 0.05, se rechaza H0 en favor a HA, por lo
+# tanto se concluye con un 95% de confianza que la edad media de las personas que logra pagar la 
+# totalidad de la casa propia es distinta para hombres y mujeres.
+
+# También se puede apreciar en los gráficos, formados a partir de permutaciones, que los datos siguen 
+# una distribución normal.
 
 # 2. Propongan una pregunta de investigación original, que involucre la comparación de las medias de más 
 # de dos grupos independientes (más abajo se dan unos ejemplos). Fijando una semilla distinta a la 
@@ -163,3 +212,6 @@ set.seed(1312)
 #   central, sur y austral). 
 #   ▪ El arriendo promedio que se paga por viviendas similares a la habitada (v19) tiene relación con 
 #   el nivel educacional (educ) del jefe o la jefa del hogar. 
+
+
+
