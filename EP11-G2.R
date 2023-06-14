@@ -4,21 +4,6 @@
 # Integrante Ariel Núñez
 # Integrante Carla Polanco
 
-# Se importa la librería "ggpubr".
-if (!require(ggpubr)) {
-  install.packages("ggpubr", dependencies = TRUE)
-  require(ggpubr)
-}
-# Se importa la librería "tidyr".
-if (!require(tidyr)) {
-  install.packages("tidyr", dependencies = TRUE)
-  require(tidyr)
-}
-# Se importa la librería "dplyr".
-if (!require(dplyr)) {
-  install.packages("dplyr", dependencies = TRUE)
-  require(dplyr)
-}
 library(ggpubr)
 library(tidyr)
 library(dplyr)
@@ -34,6 +19,7 @@ datos <- read.csv2(file.choose(), stringsAsFactors = TRUE)
 # - muestra_1, muestra_2: muestras.
 # Valor:
 # - lista con las muestras resultantes tras la permutación.
+
 obtiene_permutacion <- function(i, muestra_1, muestra_2) {
   n_1 <- length(muestra_1)
   combinada <- c(muestra_1, muestra_2)
@@ -51,6 +37,7 @@ obtiene_permutacion <- function(i, muestra_1, muestra_2) {
 # - FUN: nombre de la función que calcula el estadístico de interés.
 # Valor:
 # - diferencia de un estadístico para dos muestras.
+
 calcular_diferencia <- function(muestras, FUN) {
   muestra_1 <- muestras[[1]]
   muestra_2 <- muestras[[2]]
@@ -68,6 +55,7 @@ calcular_diferencia <- function(muestras, FUN) {
 #   hipótesis bilateral, "greater" o "less" para hipótesis unilaterales.
 # Valor:
 # - el valorp calculado.
+
 calcular_valor_p <- function(distribucion, valor_observado,
                              repeticiones, alternative) {
   if(alternative == "two.sided") {
@@ -93,6 +81,7 @@ calcular_valor_p <- function(distribucion, valor_observado,
 # Argumentos:
 # - distribucion: distribución nula del estadístico de interés.
 # - ...: otros argumentos a ser entregados a gghistogram y ggqqplot.
+
 graficar_distribucion <- function(distribucion, ...) {
   observaciones <- data.frame(distribucion)
   
@@ -116,6 +105,7 @@ graficar_distribucion <- function(distribucion, ...) {
 #   hipótesis bilateral, "greater" o "less" para hipótesis unilaterales.
 # - plot: si es TRUE, construye el gráfico de la distribución generada.
 # - ...: otros argumentos a ser entregados a graficar_distribucion.
+
 contrastar_hipotesis_permutaciones <- function(muestra_1, muestra_2,
                                                repeticiones, FUN,
                                                alternative, plot, ...) {
@@ -151,6 +141,7 @@ contrastar_hipotesis_permutaciones <- function(muestra_1, muestra_2,
 
 
 # --------------PREGUNTAS (TODOS LOS GRUPOS) --------------
+
 # 1. Propongan una pregunta de investigación original, que involucre la comparación de las medias de dos 
 # grupos independientes (más abajo se dan unos ejemplos). Fijando una semilla propia, seleccionen una 
 # muestra aleatoria de hogares (250 < n < 500) y respondan la pregunta propuesta utilizando una simulación 
@@ -219,17 +210,47 @@ contrastar_hipotesis_permutaciones(muestraEdadCasaHombre,
 # También se puede apreciar en los gráficos, formados a partir de permutaciones, que los datos siguen 
 # una distribución normal.
 
+
+
+# ------------------------------ PREGUNTA 2 ----------------------------------
+
 # 2. Propongan una pregunta de investigación original, que involucre la comparación de las medias de más 
 # de dos grupos independientes (más abajo se dan unos ejemplos). Fijando una semilla distinta a la 
 # anterior, seleccionen una muestra aleatoria de hogares (400 < n < 600) y respondan la pregunta 
 # propuesta utilizando bootstrapping. Solo por ejercicio académico, aplique un análisis post-hoc con 
 # bootstrapping aunque este no sea necesario.  Algunos ejemplos (que no pueden ser ocupados en este 
-# ejercicio) son: ▪ En promedio, el ingreso per cápita (ytotcorh / numper) en la Región Metropolitana 
+# ejercicio) son: 
+#
+#   ▪ En promedio, el ingreso per cápita (ytotcorh / numper) en la Región Metropolitana 
 # (region) es el mismo entre hombres y mujeres (sexo) no heterosexuales (r23). 
+
 #   ▪ El ingreso per cápita promedio es similar en las cuatro macro zonas (norte grande, norte chico, 
 #   central, sur y austral). 
+
 #   ▪ El arriendo promedio que se paga por viviendas similares a la habitada (v19) tiene relación con 
 #   el nivel educacional (educ) del jefe o la jefa del hogar. 
+
+# ------------------------- Enunciado ------------------------------
+
+# Bob el constructor esta haciendo un estudio y desea saber si el promedio del tamaño de las casas de la
+#  region de Tarapaca es igual para personas con techo de planchas metalicas, losa hormigon y tejas.
+#
+# Para resolver este ejercicio utilice la tecnica de Bootstrapping, para mas de dos muuestras independientes,
+# tambien considere un alfa = 0.05 y p = 1000
+
+# ------------------------------------HIPOTESIS----------------------------------
+
+# H0: El tamaño promedio de las casas de la region de tarapaca es igual para  
+#     las personas que tienen techo de planchas metalicas, losa hormigon y tejas. 
+
+# H1: El tamaño promedio de las casas de la region de tarapaca es diferente para  
+#     las personas que tienen techo de planchas metalicas, losa hormigon y tejas.
+
+
+
+
+
+
 
 
 
